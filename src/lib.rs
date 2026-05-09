@@ -26,7 +26,7 @@ impl BombCore {
     pub fn button_press(&mut self, button: u8) {
         match &mut self.state {
             BombState::Planting { input_buffer, inputted_digits } => {
-                if *inputted_digits + 1 < input_buffer.len() {
+                if *inputted_digits < input_buffer.len() {
                     input_buffer[*inputted_digits] = button;
                     *inputted_digits += 1;
                 }else {
