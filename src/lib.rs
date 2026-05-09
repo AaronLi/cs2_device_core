@@ -29,10 +29,6 @@ impl BombCore {
                 if *inputted_digits < input_buffer.len() {
                     input_buffer[*inputted_digits] = button;
                     *inputted_digits += 1;
-                }else {
-                    if *input_buffer == [7,3,5,5,6,0,8] {
-                        self.transition_state(BombState::Defusable {start_time: Instant::now(), maybe_defuse_start_time: None});
-                    }
                 }
             }
             _ => {}
@@ -53,6 +49,11 @@ impl BombCore {
 
     pub fn update(&mut self) {
         match &mut self.state {
+            BombState::Planting {input_buffer, inputted_digits} => {
+                if *input_buffer == [7,3,5,5,6,0,8] {
+                    self.transition_state(BombState::Defusable {start_time: Instant::now(), maybe_defuse_start_time: None});
+                }
+            }
             BombState::Defusable { start_time, maybe_defuse_start_time } => {
                 if start_time.elapsed() > self.fuse_time {
                     self.transition_state(BombState::Exploded)
