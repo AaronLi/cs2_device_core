@@ -68,6 +68,10 @@ impl BombCore {
         self.transition_state(BombState::Planting {input_buffer: [0; 7], inputted_digits: 0});
     }
 
+    pub fn get_state(&self) -> &BombState {
+        &self.state
+    }
+
     fn transition_state(&mut self, new_state: BombState) {
         (self.on_state_transition)(&self.state, &new_state);
         self.state = new_state;
