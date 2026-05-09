@@ -73,6 +73,14 @@ impl BombCore {
         &self.state
     }
 
+    pub fn get_fuse_time(&self) -> Duration {
+        self.fuse_time
+    }
+
+    pub fn get_defuse_time(&self) -> Duration {
+        self.defuse_time
+    }
+
     fn transition_state(&mut self, new_state: BombState) {
         (self.on_state_transition)(&self.state, &new_state);
         self.state = new_state;
