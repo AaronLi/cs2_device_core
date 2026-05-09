@@ -1,5 +1,6 @@
 use std::time::{Duration, Instant};
 
+#[derive(Debug, Clone, Copy)]
 pub enum BombState{
     Planting{input_buffer: [u8; 7], inputted_digits: usize},
     Defusable{start_time: Instant, maybe_defuse_start_time: Option<Instant>},
@@ -7,6 +8,7 @@ pub enum BombState{
     Defused
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct BombCore {
     state: BombState,
     defuse_time: Duration,
