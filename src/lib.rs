@@ -8,21 +8,23 @@ pub enum BombState{
     Defused
 }
 
-#[derive(Debug, Clone, Copy)]
 pub struct BombCore {
     state: BombState,
     defuse_time: Duration,
     fuse_time: Duration,
-    on_state_transition: fn(from: &BombState, to: &BombState) -> ()
+    on_state_transition: Box<dyn FnMut(&BombState, &BombState)>,
 }
 
 impl BombCore {
-    pub fn new(defuse_time: Duration, fuse_time: Duration, on_state_transition: fn(from: &BombState, to: &BombState)) -> Self {
+    pub fn new<F>(defuse_time: Duration, fuse_time: Duration, on_state_transition: F) -> Self
+    where
+        F: FnMut(&BombState, &BombState) + 'static,
+    {
         BombCore {
             state: BombState::Planting {input_buffer: [0; 7], inputted_digits: 0 },
             defuse_time,
             fuse_time,
-            on_state_transition,
+            on_state_transition: Box::new(on_state_transition),
         }
     }
     pub fn button_press(&mut self, button: u8) {
